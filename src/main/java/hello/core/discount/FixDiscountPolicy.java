@@ -13,7 +13,6 @@ public class FixDiscountPolicy implements DiscountPolicy {
             return discountFixAmount;
         else
             return 0;
-
     }
 
 }

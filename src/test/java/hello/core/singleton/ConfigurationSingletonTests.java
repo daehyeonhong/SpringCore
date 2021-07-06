@@ -19,7 +19,7 @@ public class ConfigurationSingletonTests {
         final OrderServiceImpl orderService = annotationConfigApplicationContext.getBean("orderService", OrderServiceImpl.class);
         final MemoryMemberRepository memberRepository = annotationConfigApplicationContext.getBean("memberRepository", MemoryMemberRepository.class);
 
-        assertThat(memberService.getMemberRepository()).isSameAs(orderService.getMemberRepository()).isSameAs(memberRepository);
+        // assertThat(memberService.getMemberRepository()).isSameAs(orderService.getMemberRepository()).isSameAs(memberRepository);
         assertThat(orderService.getMemberRepository()).isSameAs(orderService.getMemberRepository());
         assertThat(memberService.getMemberRepository()).isSameAs(memberRepository);
         assertThat(memberService.getMemberRepository()).isSameAs(memberRepository);
