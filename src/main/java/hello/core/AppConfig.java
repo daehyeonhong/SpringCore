@@ -28,7 +28,7 @@ public class AppConfig {
 
     @Bean
     public OrderService orderService() {
-        return new OrderServiceImpl();
+        return new OrderServiceImpl(new MemoryMemberRepository(), new RateDiscountPolicy());
     }
 
     @Bean

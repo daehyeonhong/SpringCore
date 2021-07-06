@@ -36,9 +36,7 @@ class OrderServiceTest {
 
     @Test
     void fieldInjectionTest() {
-        OrderServiceImpl orderService = new OrderServiceImpl();
-        orderService.setMemberRepository(new MemoryMemberRepository());
-        orderService.setDiscountPolicy(new RateDiscountPolicy());
+        OrderServiceImpl orderService = new OrderServiceImpl(new MemoryMemberRepository(), new RateDiscountPolicy());
         orderService.createOrder(1L, "itemA", 10000);
     }
 
