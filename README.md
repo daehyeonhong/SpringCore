@@ -1,2 +1,0 @@
-# SpringCore
-SpringCore
