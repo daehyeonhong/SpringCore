@@ -8,7 +8,6 @@ import hello.core.member.MemoryMemberRepository;
 public class OrderServiceImpl implements OrderService {
 
     private final MemberRepository memberRepository = new MemoryMemberRepository();
-    //    private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
     private DiscountPolicy discountPolicy;
 
     @Override
