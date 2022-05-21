@@ -1,10 +1,13 @@
 package hello.core.scope;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Provider;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SingletonWithPrototypeTests {
@@ -28,7 +31,7 @@ class SingletonWithPrototypeTests {
             final ClientBean clientBean1 = annotationConfigApplicationContext.getBean(ClientBean.class);
             assertThat(clientBean1.logic()).isEqualTo(1);
             final ClientBean clientBean2 = annotationConfigApplicationContext.getBean(ClientBean.class);
-            assertThat(clientBean2.logic()).isEqualTo(2);
+            assertThat(clientBean2.logic()).isEqualTo(1);
             final PrototypeBean prototypeBean2 = annotationConfigApplicationContext.getBean(PrototypeBean.class);
             prototypeBean2.addCount();
             assertThat(prototypeBean2.getCount()).isEqualTo(1);
@@ -38,16 +41,15 @@ class SingletonWithPrototypeTests {
     }
 
     @Scope(value = "singleton")
+    @RequiredArgsConstructor
     static class ClientBean {
-        private final PrototypeBean prototypeBean;
-
-        public ClientBean(final PrototypeBean prototypeBean) {
-            this.prototypeBean = prototypeBean;
-        }
+        //        private final ObjectProvider<PrototypeBean> prototypeBeanObjectProvider;
+        private final Provider<PrototypeBean> prototypeBeanProvider;
 
         public int logic() {
-            this.prototypeBean.addCount();
-            return this.prototypeBean.getCount();
+            final PrototypeBean prototypeBean = prototypeBeanProvider.get();
+            prototypeBean.addCount();
+            return prototypeBean.getCount();
         }
 
         @PostConstruct
