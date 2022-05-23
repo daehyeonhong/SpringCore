@@ -3,7 +3,6 @@ package hello.core.web;
 import hello.core.common.MyLogger;
 import hello.core.service.LogDemoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,15 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class LogDemonController {
     private final LogDemoService logDemoService;
-    private final ObjectProvider<MyLogger> myLoggerProvider;
+    private final MyLogger myLogger;
 
     @RequestMapping(value = "demo")
     @ResponseBody
     public String logDemo(HttpServletRequest request) {
-        final MyLogger myLogger = this.myLoggerProvider.getObject();
         final String requestURL = request.getRequestURL().toString();
-        myLogger.setRequestURL(requestURL);
-        myLogger.log("controller test");
+        this.myLogger.setRequestURL(requestURL);
+        this.myLogger.log("controller test");
         this.logDemoService.logic("test-id");
         return "OK";
     }

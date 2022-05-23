@@ -1,13 +1,16 @@
 package hello.core.common;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.UUID;
+import static org.springframework.context.annotation.ScopedProxyMode.TARGET_CLASS;
 
 @Component
-@Scope(value = "request")
+@Scope(value = "request", proxyMode = TARGET_CLASS)
+@Slf4j
 public class MyLogger {
     private String uuid;
     private String requestURL;
@@ -17,17 +20,17 @@ public class MyLogger {
     }
 
     public void log(final String message) {
-        System.out.printf("[%s][%s] %s%n", this.uuid, this.requestURL, message);
+        log.info("[{}][{}] {}", this.uuid, this.requestURL, message);
     }
 
     @PostConstruct
     public void init() {
         this.uuid = UUID.randomUUID().toString();
-        System.out.printf("[%s] request scope bean creat: %s%n", this.uuid, this);
+        log.info("[{}] request scope bean creat: [{}]", this.uuid, this);
     }
 
     @PreDestroy
     public void close() {
-        System.out.printf("[%s] request scope bean close: %s%n", this.uuid, this);
+        log.info("[{}] request scope bean close: [{}]", this.uuid, this);
     }
 }
