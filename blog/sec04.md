@@ -38,3 +38,13 @@
 - `SpringBean`을 생성하고 의존관계를 주입하는 단계를 **생성과정**이라 한다.
 - 생성과정을 거치면서 의존관계 주입이 완료된 `SpringBean`은 `SpringContainer`에서 관리한다.
 - 단순하게 Java 코드를 호출하는 것 같지만 차이가 존재함.
+
+### 모든 Bean 출력하기
+- `SpringContainer`에 등록된 모든 `SpringBean`을 조회할 수 있다.
+- `applicationContext.getBeanDefinitionNames()`를 사용하면 등록된 모든 `SpringBean`의 이름을 조회할 수 있다.
+- `applicationContext.getBean()`을 사용하면 등록된 모든 `SpringBean`(Instance)을 조회할 수 있다.
+### Application Bean 출력하기
+- `Spring`이 내부에서 사용하는 Bean은 제외, 내가 등록한 Bean만 출력하고 싶다면?
+  - `applicationContext.getBeanDefinitionNames()`로 모든 Bean 이름을 조회한 후, `getRole()`로 역할을 출력한다.
+    - `ROLE_APPLICATION`: 내가 등록한 Bean
+    - `ROLE_INFRASTRUCTURE`: 내가 등록한 Bean이 아니라 `Spring`이 내부에서 사용하는 Bean
