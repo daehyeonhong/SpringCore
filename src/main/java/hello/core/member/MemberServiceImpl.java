@@ -19,4 +19,9 @@ public class MemberServiceImpl implements MemberService {
     public Optional<Member> findMember(Long memberId) {
         return this.memberRepository.findById(memberId);
     }
+
+    // Test 용도
+    public MemberRepository getMemberRepository() {
+        return this.memberRepository;
+    }
 }
