@@ -76,3 +76,16 @@
     - `EnvironmentCapable`: 환경변수
     - `ApplicationEventPublisher`: 애플리케이션 이벤트
     - `ResourceLoader`: 편리한 리소스 조회
+
+## 다양한 설정 형식 지원 - 자바 코드, XML
+- `SpringContainer`는 다양한 형식의 설정 정보를 받아드릴 수 있게 유연하게 설계되어 있다.
+- 자바 코드, XML, Groovy
+![img_4.png](img_4.png)
+
+### Annotation 기반 자바 코드 설정 사용
+- `new AnnotationConfigApplicationContext(AppConfig.class);`
+- `AnnotationConfigApplicationContext`는 `ApplicationContext`의 구현체이다.
+- `AnnotationConfigApplicationContext` 클래스를 사용하면서 Java 코드로 된 설정 정보를 넘기면 된다.
+
+### XML 설정 사용
+- `new GenericXmlApplicationContext("appConfig.xml");`
