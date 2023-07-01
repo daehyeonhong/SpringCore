@@ -78,14 +78,47 @@
     - `ResourceLoader`: 편리한 리소스 조회
 
 ## 다양한 설정 형식 지원 - 자바 코드, XML
+
 - `SpringContainer`는 다양한 형식의 설정 정보를 받아드릴 수 있게 유연하게 설계되어 있다.
 - 자바 코드, XML, Groovy
-![img_4.png](img_4.png)
+  ![img_4.png](img_4.png)
 
 ### Annotation 기반 자바 코드 설정 사용
+
 - `new AnnotationConfigApplicationContext(AppConfig.class);`
 - `AnnotationConfigApplicationContext`는 `ApplicationContext`의 구현체이다.
 - `AnnotationConfigApplicationContext` 클래스를 사용하면서 Java 코드로 된 설정 정보를 넘기면 된다.
 
 ### XML 설정 사용
+
 - `new GenericXmlApplicationContext("appConfig.xml");`
+
+### XML 설정과 자바 코드 설정의 장단점
+
+- XML 설정
+    - 장점
+        - 설정 정보를 변경하고 싶을 때, XML만 변경하면 된다.
+        - 프로젝트가 커지면서 설정 정보가 많아지면 XML이 복잡해진다.
+        - 스프링 설정을 하다보면, 스프링 코드(Java)와 비교해서 어떤 것이 더 좋다는 것을 느낄 수 있다.
+    - 단점
+        - 컴파일을 해야해서 런타임시에 오류를 확인할 수 있다.
+        - XML 작성이 복잡하다.
+- 자바 코드 설정
+    - 장점
+        - 컴파일 시점에 오류를 확인할 수 있다.
+        - 자바 코드로 구현하기 때문에, IDE의 도움을 받을 수 있다.
+    - 단점
+        - 설정 정보를 변경하려면 자바 코드를 변경해야 한다.
+        - 자바 코드를 변경하면 컴파일을 다시 해야 한다.
+        - 설정 정보가 컴파일 시점에 다 메모리에 올라가기 때문에, 메모리 낭비가 있을 수 있다.
+
+### `SpringBean` 설정 메타 정보 - BeanDefinition
+- Spring은 `BeanDefinition`이라는 추상화를 통해, 다양한 설정 형식을 지원한다.
+- **역할과 구현을 개념적으로 나눈 것**이다.
+  - XML을 읽어서 `BeanDefinition`을 만들면 된다.
+  - 자바 코드를 읽어서 `BeanDefinition`을 만들면 된다.
+  - 스프링 컨테이너는 자바 코드인지, XML인지 몰라도 된다. 오직 `BeanDefinition`만 알면 된다.
+- `BeanDefinition`을 빈(Bean) 설정 메타정보라 한다.
+  - `@Bean`, `<bean>` 당 각각 하나씩 메타 정보가 생성된다.
+- SpringContainer는 이 메타 정보를 기반으로 스프링 빈을 생성한다.
+![img_5.png](img_5.png)
