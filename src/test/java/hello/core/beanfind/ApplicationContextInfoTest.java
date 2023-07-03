@@ -17,7 +17,6 @@ class ApplicationContextInfoTest {
         Arrays.stream(this.annotationConfigApplicationContext.getBeanDefinitionNames())
                 .map(beanName -> String.format("beanDefinitionName = %s object = %s", beanName, annotationConfigApplicationContext.getBean(beanName)))
                 .forEach(System.out::println);
-    }
 
     @Test
     @DisplayName(value = "애플리케이션 빈 출력하기")
@@ -29,5 +28,16 @@ class ApplicationContextInfoTest {
                 .filter(beanDefinitionName -> BeanDefinition.ROLE_APPLICATION == this.annotationConfigApplicationContext.getBeanDefinition(beanDefinitionName).getRole())
                 .map(beanName -> String.format("beanDefinitionName = %s object = %s", beanName, annotationConfigApplicationContext.getBean(beanName)))
                 .forEach(System.out::println);
+    }
+        String[] beanDefinitionNames = annotationConfigApplicationContext.getBeanDefinitionNames();
+        for (String beanDefinitionName : beanDefinitionNames) {
+            BeanDefinition beanDefinition = annotationConfigApplicationContext.getBeanDefinition(beanDefinitionName);
+//            BeanDefinition.ROLE_APPLICATION: 직접 등록한 Application Bean
+//            BeanDefinition.ROLE_INFRASTRUCTURE: 스프링이 내부에서 등록한 빈
+            if (beanDefinition.getRole() == BeanDefinition.ROLE_APPLICATION) {
+                Object bean = annotationConfigApplicationContext.getBean(beanDefinitionName);
+                System.out.println("name = " + beanDefinitionName + " bean = " + bean);
+            }
+        }
     }
 }
