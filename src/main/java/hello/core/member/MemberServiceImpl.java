@@ -1,5 +1,8 @@
 package hello.core.member;
 
+import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
@@ -22,5 +25,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Optional<Member> findMember(Long memberId) {
         return this.memberRepository.findById(memberId);
+    }
+
+    // Test 용도
+    public MemberRepository getMemberRepository() {
+        return this.memberRepository;
     }
 }

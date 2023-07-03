@@ -3,8 +3,6 @@ package hello.core.order;
 import hello.core.discount.DiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
-import org.springframework.stereotype.Service;
-
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -21,5 +19,10 @@ public class OrderServiceImpl implements OrderService {
         final Member member = this.memberRepository.findById(memberId).get();
         final int discountPrice = this.discountPolicy.discount(member, itemPrice);
         return new Order(memberId, itemName, itemPrice, discountPrice);
+    }
+
+    // Test 용도
+    public MemberRepository getMemberRepository() {
+        return this.memberRepository;
     }
 }
