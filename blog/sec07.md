@@ -114,3 +114,62 @@
 **우선순위**
 `@Primary`는 기본값, `@Qualifier`는 추가 구분자
 자동 값인 `@Primary` 보다 수동 선택 값인 `@Qualifier`가 우선권을 가진다.
+
+### 조회한 빈이 모두 필요할 때, List, Map
+
+**로직분석**
+
+- `DiscountService`는 Map으로 모든 할인정책을 주입받고, 이떄 `fixDiscountPolicy`, `rateDiscountPolicy`가 주입된다.
+- `discount()` 메소드는 discountCode를 파라미터로 받는다. 이때, `fixDiscountPolicy`, `rateDiscountPolicy`가 모두 주입되어 있기
+  때문에, `discountCode`를 키로 하는 할인정책을 찾아서 할인을 적용한다.
+
+**주입분석**
+
+- `Map<String, DiscountPolicy>` : map 의 키에 스프링 빈의 이름을 넣고, 그 값으로 `DiscountPolicy` 타입으로 조회한 모든 스프링 빈을 담아준다.
+- `List<DiscountPolicy>` : `DiscountPolicy` 타입으로 조회한 모든 스프링 빈을 담아준다.
+- 만약 해당하는 타입의 스프링 빈이 없으면, 빈 컬렉션이나 Map을 주입한다.
+
+## 자동, 수동의 올바른 실무 운영 기준
+
+**편리한 자동 기능을 기본으로 사용하자**
+
+- 스프링도 자동 등록을 기본으로 사용하고, 수동 빈 등록은 기본적으로 최소화하는 것이 좋다.
+- `SpringBoot`는 ComponentScan을 기본으로 제공한다.
+
+**수동 빈 등록을 사용하는 경우**
+**업무 로직 빈:** 웹을 지원하는 컨트롤러, 핵심 비즈니스 로직이 있는 서비스, 데이터 계층의 로직을 처리하는 리포지토리등이 모두 업무 로직이다. 보통 비즈니스 요구사항을 개발할 때 추가되거나 변경된다.
+**기술 지원 빈:** 기술적 문제 혹은 공통 관심사(AOP)를 처리할 때 주로 사용. 데이터베이스 연결이나, 공통 로그 처리 처럼 업무 로직을 지원하기 위한 하부 기술이나 공통 기술들이다.
+
+- 업무 로직 빈은 숫자가 정해지지 않고, 코드를 공유하기도 하면서 변경이 잦다.
+- 기술 지원 빈은 업무 로직을 좀 더 편리하게 지원하기 위해 주로 사용된다.
+
+- 애플리케이션에 광범위하게 영향을 미치는 기술 지원 객체는 수동 빈으로 등록을 권장. 유지 보수 유리
+
+- 비지니스 로직 중 다형성을 적극 활용하는 경우
+
+```java
+
+@Configuration
+public class DiscountPolicyConfig {
+
+    @Bean
+    public DiscountPolicy rateDiscountPolicy() {
+        return new RateDiscountPolicy();
+    }
+
+    @Bean
+    public DiscountPolicy fixDiscountPolicy() {
+        return new FixDiscountPolicy();
+    }
+
+}
+```
+
+- 이런 경우 자동 빈 등록을 사용하면, 어떤 빈이 등록되어 있는지 파악하기 어렵다.
+- 수동 빈 등록을 사용하면, 어떤 빈이 수동으로 등록되어 있는지 파악하기 쉽다.
+- 수동 빈 등록 혹은 자동 빈 등록을 하려면 **특정 패키지에 같이 묶어** 두는 것이 좋음
+
+**정리**
+- 편리한 자동 기능 기본으로
+- 수동 빈 등록은 기술 지원이나, 업무 로직과 관련된 빈등록에만 사용
+- 다형성을 적극 활용하는 비지니스 로직은 수동 빈 등록 고려
