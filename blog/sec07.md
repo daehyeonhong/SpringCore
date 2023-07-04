@@ -79,5 +79,38 @@
 - 필수값이 아닌 경우 수정자 주입을 옵션으로 사용 가능
 
 ### 롬복과 최신 트랜드
+
 - `@RequiredArgsConstructor` : final이 붙은 필드를 모아서 생성자를 자동으로 만들어준다.
-![img_9.png](img_9.png)
+  ![img_9.png](img_9.png)
+
+### `@Autowired` 필드 명, `@Qualifier`, `@Primary`
+
+조회 대상 빈이 2개 이상일 때 해결 방법
+
+- `@Autowired` 필드 명 매칭
+- `@Qualifier` -> `@Qualifier`끼리 매칭 -> 빈 이름 매칭
+- `@Primary` 사용
+
+#### `@Autowired` 필드명 매칭
+
+1. 타입 매칭
+2. 타입 매칭의 결과가 2개 이상일 때 필드 명, 파라미터 명으로 빈 이름 매칭
+
+#### `@Qualifier` 사용
+
+1. `@Qualifier`는 추가 구분자를 붙여주는 방법이다.
+2. `@Qualifier`로 주입할 때 대상을 찾지 못하는 경우, Qualifier의 value를 이름으로 하는 스프링 빈을 탐색.
+3. `NoUniqueBeanDefinitionException` 예외 발생
+
+#### `@Primary` 사용
+
+1. `@Primary`는 우선순위를 정하는 방법이다.
+2. `@Qualifier`를 사용하는 것 보다는 `@Primary`를 사용하는 것이 낫다.
+3. `@Primary`는 여러 곳에 사용할 수 있다.
+
+**`@Primary`, `@Qualifier` 활용**
+같은 인터페이스를 구현한 여러 빈이 있을 때, `@Primary`는 우선순위를 정하는 방법이고, `@Qualifier`는 추가적인 구분자를 붙여주는 방법이다.
+
+**우선순위**
+`@Primary`는 기본값, `@Qualifier`는 추가 구분자
+자동 값인 `@Primary` 보다 수동 선택 값인 `@Qualifier`가 우선권을 가진다.
