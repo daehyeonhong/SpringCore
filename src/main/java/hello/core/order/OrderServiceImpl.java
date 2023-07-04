@@ -3,6 +3,8 @@ package hello.core.order;
 import hello.core.discount.DiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
+import org.springframework.stereotype.Service;
+
 @Service
 public class OrderServiceImpl implements OrderService {
 

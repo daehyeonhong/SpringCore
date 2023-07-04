@@ -3,9 +3,11 @@ package hello.core.common;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.UUID;
+
 import static org.springframework.context.annotation.ScopedProxyMode.TARGET_CLASS;
 
 @Component
